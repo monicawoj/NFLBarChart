@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>CFB Power Rankings</title>
+<style>
+
+body {
+  font: 12px sans-serif;
+  font-family: 'Arial';
+}
+
+.bar.positive {
+  fill: steelblue;
+}
+
+.bar.negative {
+  fill: brown;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: grey;
+    stroke-width: 1;
+    shape-rendering: crispEdges;
+}
+
+text.shadow {
+  stroke: #fff;
+  stroke-width: 2.5px;
+  opacity: 0.9;
+}
+
+.bar {
+  fill: orange;
+}
+
+.bar:hover {
+  fill: green ;
+}
+
+.d3-tip {
+  line-height: 1;
+  font-weight: bold;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 2px;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.8);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+}
+
+.grid .tick {
+    stroke: white;
+    stroke-opacity: 0.7;
+    shape-rendering: crispEdges;
+}
+.grid path {
+          stroke-width: 0;
+}
+
+</style>
+<body>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+<script>
+
+var file_name = "cfb2015_master.csv";
+
+var split = file_name.split("cfb").pop().split("_");
+//var split2 = file_name.split("week").pop().split(".txt");
+
+var year = split[0];
+//var week = split2[0];
+
+var margin = {top: 70, right: 10, bottom: 10, left: 50},
+    width = 630 - margin.left - margin.right,
+    height = 450 - margin.top - margin.bottom;
+
+var x = d3.scale.linear()
+    .range([0, width]);
+
+//var y = d3.scale.ordinal()
+//    .rangeRoundBands([0, height], .1);
+
+var y = d3.scale.linear()
+    .range([0,height]);
+
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .ticks(16)
+    //.tickValues([0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30])
+    .orient("top");
+
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .ticks(25)
+    .orient("left");
+    //.text(function(d) {return d.Rank;});
+
+var tip = d3.tip()
+  .attr('class', 'd3-tip')
+  .offset([-10, 0])
+  .html(function(d) {
+    return d.Rank + ") " + d.Team + "<strong>: </strong> <span style='color:yellow'>" + d.TotalRating + "</span>";
+  })
+  ;
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+// function for the x grid lines
+function make_x_axis() {
+    return d3.svg.axis()
+        .scale(x)
+        .orient("bottom")
+        .ticks(15)
+    };
+
+svg.call(tip);
+
+d3.csv(file_name, type, function(error, data) {
+  var newdata = data.filter(function(d,i) { return i < 25;
+  });
+  var weekdata = data.filter(function(d,i) {return i < 1;});
+  //x.domain([0,30]).nice();
+  x.domain([0, 3 + d3.max(data, function(d) { return d.TotalRating; })]);
+  y.domain([0,25]);
+
+  var bars = svg.selectAll(".bar")
+    .data(newdata)
+    .enter().append("g");
+
+  bars.append("rect")
+      .attr("class", function(d) { return d.TotalRating < 0 ? "bar negative" : "bar positive"; })
+      .attr("x", function(d) { return x(Math.min(0, d.TotalRating)); })
+      .attr("y", function(d) { return y(d.Rank)-height/25; })
+      .attr("width", function(d) { return Math.abs(x(d.TotalRating) - x(0)); })
+      .attr("height", height/25.5);
+
+/* var bars = svg.selectAll(".bar")
+      .data(newdata)
+    .enter().append("rect")
+      .attr("class", function(d) { return d.TotalRating < 0 ? "bar negative" : "bar positive"; })
+      .attr("x", function(d) { return x(Math.min(0, d.TotalRating)); })
+      .attr("y", function(d) { return y(d.Team); })
+      .attr("width", function(d) { return Math.abs(x(d.TotalRating) - x(0)); })
+      .attr("height", y.rangeBand());*/
+
+var selection = bars
+      .on('mouseover', tip.show)
+      .on('mouseout', tip.hide)
+      ;
+
+
+
+  svg.append("g")
+      .attr("class", "x axis")
+      .call(xAxis);
+
+ // Draw the x Grid lines
+    svg.append("g")
+        .attr("class", "grid")
+        .attr("transform", "translate(0," + height + ")")
+        .call(make_x_axis()
+            .tickSize(-height, 0, 0)
+            .tickFormat("")
+        );
+
+// Add the Y Axis
+    svg.append("g")
+        .attr("class", "y axis")
+        .call(yAxis);
+
+
+  svg.append("g")
+      .attr("class", "y axis")
+    .append("line")
+      .attr("x1", x(0))
+      .attr("x2", x(0))
+      .attr("y2", height);
+
+  bars.append("text")
+    .attr("x", function(d) { return x(d.TotalRating) + 3; })
+    .attr("y", function(d) { return y(d.Rank)-height/55; })
+    .attr("dy", ".25em")
+    .attr("text-anchor","start")
+    .attr("fill","black")
+    .text(function(d) { return d.Team; });
+
+// Add the title
+    svg.append("text")
+        .attr("x", width/2)     
+        .attr("y", 0 - (margin.top / 1.75))
+        .attr("text-anchor", "middle")
+        .style("font-size", "20px")
+  //      .style("text-decoration", "underline")
+        .text("CFB Power Rankings");
+
+ // // Add the subtitle (right)
+ //    svg.append("text")
+ //        .attr("x", width - 100)     
+ //        .attr("y", 0 - (margin.top / 2.5))
+ //        .attr("text-anchor", "middle")
+ //        .style("font-size", "16px")
+ //        .attr("fill","lightgrey")
+ //        .text(year + ", for Week " + week);
+
+//Adds the week label to the bottom of chart
+var week_label = svg.data(weekdata).append("text")
+    .attr("x",width - 200)
+    .attr("y",height - margin.bottom)
+    .attr("font-size", "20px")
+    .attr("fill","lightgrey")
+    //.text(year + ", for Week " + week); (when week is in doc title)
+    .text(function(weekdata) { return year + ", for Week " + weekdata.Week; });
+
+});
+
+function type(d) {
+  d.TotalRating = +d.TotalRating;
+  return d;
+}
+
+
+
+</script>
+
+<p>Massey-Peabody (Created by: Monica Wojciechowski)</p>

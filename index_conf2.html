@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>Evolution of CFB Team Rank, by Conference</title>
+<style>
+
+body {
+  font: 11px sans-serif;
+  font-family: "Trebuchet MS";
+}
+
+p {
+  font: 15px sans-serif;
+}
+
+.bar.positive {
+  fill: steelblue;
+}
+
+.bar.negative {
+  fill: brown;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: grey;
+    stroke-width: 1;
+    shape-rendering: crispEdges;
+}
+
+text.shadow {
+  stroke: #fff;
+  stroke-width: 2.5px;
+  opacity: 0.9;
+}
+
+.bar {
+  fill: orange;
+}
+
+.bar:hover {
+  fill: green ;
+}
+
+.d3-tip {
+  line-height: 1;
+  font-weight: bold;
+  font-family: Helvetica;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 2px;
+}
+
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+  margin: -1px 0 0 0;
+  font-family: Helvetica;
+  top: 100%;
+  left: 0;
+}
+
+.grid .tick {
+    stroke: #b1b1b1;
+    stroke-opacity: 0.7;
+    shape-rendering: crispEdges;
+}
+.grid path {
+          stroke-width: 0;
+}
+
+.title {
+        font: 200 40px Helvetica;
+        fill: #666;
+      }
+
+</style>
+<body>
+
+<div>
+  <div id="div1"></div>
+  <div style="text-align: center; width:770px;" id="div2">
+  <p>Click on the buttons below to explore the evolution of CFB ranks from end-of-year 2007 to end-of-year 2015.</p>
+  <button id="minus_update">&#8592; Previous Year</button>
+  <button id="plus_update">&#8594; Next Year</button>
+  </div>
+</div>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+<script>
+
+var file_name = "endofyear_wide.csv";
+
+var margin = {top: 70, right: 10, bottom: 10, left: 50},
+    width = 750 - margin.right,
+    height = 450 - margin.top - margin.bottom;
+
+var x = d3.scale.ordinal()
+  .rangeRoundBands([0, width+38]);
+
+var y = d3.scale.linear()
+    .range([0, height]);
+
+var z = d3.scale.linear()
+    .range([0, width]);
+
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .tickValues(x.domain().filter(function(d,i) { return i == 1 || i == 2 || i == 4 || i == 6 || i == 8 || i == 9 || i == 11 || i == 13 || i == 15 || i == 17; }))
+    .orient("bottom");
+
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .outerTickSize(0)
+    .tickValues([1,10,20,30,40,50,60,70,80,90,100,110,120,128])
+    .orient("left");
+
+var tip = d3.tip()
+  .attr('class', 'd3-tip')
+  .offset([-10, 0])
+  .html(function(d) {
+    return d["y"+year] + ") " + d.team;
+  });
+
+var svg = d3.select("#div1").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom + 20)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+//from https://github.com/angelaambroz/geoTZ/blob/master/1_citypops.html (to transition year by year)
+var years = [2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015]
+        year0 = d3.min(years),
+            year1 = d3.max(years),
+            year = year1;
+
+var title = svg.append("text")
+              .attr("class", "title")
+              .attr("dy", (-10) + "px")
+              .attr("dx", (width-80) + "px")
+              .text(year);
+
+// function for the x grid lines
+function make_x_axis() {
+    return d3.svg.axis()
+        .scale(x)
+        // for grid lines between conferences
+        .tickValues(x.domain().filter(function(d,i) { return i == 1 || i == 2 || i == 4 || i == 6 || i == 8 || i == 9 || i == 11 || i == 13 || i == 15 || i == 17; }))
+        .orient("bottom")
+    };
+
+svg.call(tip);
+
+//data
+d3.csv(file_name, type, function(error, data) {
+  z.domain([0,19]).nice();
+  y.domain([1,128]).nice();
+  x.domain(data.map(function(d,i) { return d.Conference; }));
+
+var data2 = [0,20,40,60,80,100,120];
+
+svg.selectAll(".backgound-bar")
+.data(data2)
+.enter()
+.append("rect")
+.attr("class", "background-bar")
+.attr("x", function(d) { return x(0); })
+.attr("width", width+margin.right)
+.attr("y", function(d) { return y(d); })
+.attr("height", y(10))
+.style("fill","#e6e9ec");
+
+//Remove ticks at 0
+svg.selectAll(".tick")
+     .filter(function (d) { return d == 0; })
+     .remove();
+
+//Add the main conference labels
+var conference_names = [
+  {"xval": 1, "name": "Pac-12"},
+  {"xval": 2.5, "name": "Big 12"},
+  {"xval": 4.2, "name": "Big Ten"},
+  {"xval": 6.3, "name": "SEC"},
+  {"xval": 8.3, "name": "ACC"},
+  {"xval": 10, "name": "Indep"},
+  {"xval": 11.7, "name": "American"},
+  {"xval": 13.7, "name": "C-USA"},
+  {"xval": 16, "name": "MAC"},
+  {"xval": 18.2, "name": "MW"},
+  {"xval": 19.8, "name": "Sunbelt"}
+];
+
+svg.selectAll(".conference_names")
+      .data(conference_names)
+      .enter()
+      .append("text")
+      .attr("class","conference_names")
+      .attr("y", function(d) { return y(134); })
+      .attr("x", function(d) { return z(d.xval); })
+      .attr("fill", function(d) { return "black"; })
+      .text(function(d) { return d.name;})
+      .attr("font-size", "10px")
+      .style("text-anchor", "middle");
+
+//Add the conference region label
+var regions = [
+  {"xval": 0.5, "name": "North"},
+  {"xval": 1.5, "name": "South"},
+  {"xval": 3.7, "name": "West"},
+  {"xval": 4.7, "name": "East"},
+  {"xval": 5.8, "name": "West"},
+  {"xval": 6.8, "name": "East"},
+  {"xval": 8, "name": "Atlantic"},
+  {"xval": 9, "name": "Coatal"},
+  {"xval": 11, "name": "West"},
+  {"xval": 12.3, "name": "East"},
+  {"xval": 13.2, "name": "West"},
+  {"xval": 14.3, "name": "East"},
+  {"xval": 15.3, "name": "West"},
+  {"xval": 16.4, "name": "East"},
+  {"xval": 17.5, "name": "West"},
+  {"xval": 18.5, "name": "Mountain"},
+];
+
+//As a rule, when you introduce a transform attribute as you did for rotate, you should do all your transformation via this attribute. So, you need to use translate instead of using the "x" attribute.
+svg.selectAll(".regions")
+      .data(regions)
+      .enter()
+      .append("text")
+      .attr("class","regions")
+      .attr("fill", function(d) { return "black"; })
+      .text(function(d) { return d.name;})
+      .style("text-anchor", "start")
+      .attr("transform", function(d) {
+          return "translate("+z(d.xval)+","+y(129)+")" + "rotate(-90)"});
+
+var color = d3.scale.ordinal()
+    .domain(data.map(function(d,i) { return d.Conference; }))
+    .range(["#1f77b4","#aec7e8","#2ca02c", "#ff7f0e","#ffbb78","#d62728","#ff9896","#9467bd","#c5b0d5","#8c564b","#e377c2","#f7b6d2","#7f7f7f","#c7c7c7","#bcbd22","#dbdb8d","#17becf","#9edae5","#2ca02c","#393b79"]);
+
+var year = 2015;
+
+function draw(data) {
+//create placeholder
+  var circles = svg.selectAll("circle")
+      .data(data);
+
+//enter selection
+  circles.enter().append("circle");
+
+//update selection
+   circles.attr("cy", function(d) {
+            if (d["y"+year] == 0 || d["y"+year] == "#N/A") {return -150}
+            else  {return y(parseInt(d["y"+year])); }
+        ;})
+      .attr("cx", function(d) { return x(d.Conference) ; })
+      .attr("r", 5)
+      .attr("fill", function(d) { return color(d.Conference); })
+      .attr("stroke","black")
+      .on('mouseover', tip.show)
+      .on('mouseout', tip.hide);
+
+//exit selection
+  circles.exit().remove();
+
+} //end function draw(data)
+
+  svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis)
+      .selectAll("text")  
+            .style("text-anchor", "end")
+            .attr("dx", "-.8em")
+            .attr("dy", ".15em")
+            .text("")
+            ;
+
+var height_plus = height + y(5);
+
+ // Draw the x Grid lines
+    svg.append("g")
+        .attr("class", "grid")
+        .attr("transform", "translate(0," + height_plus +")")
+        .call(make_x_axis()
+            .tickSize(-height - 20, 0, 0)
+            .tickFormat("")
+        );
+
+// Add the Y Axis
+    svg.append("g")
+        .attr("class", "y axis")
+        .call(yAxis);
+  svg.append("g")
+      .attr("class", "y axis")
+      .append("line")
+      .attr("x1", x(0))
+      .attr("x2", x(0))
+      .attr("y2", height);
+
+// Add the title
+    svg.append("text")
+        .attr("x", width/2)     
+        .attr("y", 0 - (margin.top / 2.5))
+        .attr("text-anchor", "middle")
+        .style("font-size", "20px")
+        .text("Evolution of CFB Team Rank, by Conference");
+
+//load initial data (current year)
+window.onload = draw(data);
+
+d3.select('#minus_update')
+    .on("click",minus_update);
+
+ d3.select('#plus_update')
+    .on("click",plus_update);
+
+    function minus_update() {
+      console.log(year);
+      if (year > 2007) {
+        year = year - 1;
+      tip.html(function(d) {
+      return d["y"+year] + ") " + d.team;
+      });
+      svg.call(tip);
+        title.text(year);
+        svg.selectAll("circle")
+        .transition()
+        .duration(1000)
+        .delay(100)
+        .attr("cy", function(d) {
+            if (d["y"+year] == 0 || d["y"+year] == "#N/A") {return -150}
+            else  {return y(parseInt(d["y"+year])); }
+        ;})
+      }
+      else {
+        year == 2007;
+        tip.html(function(d) {
+      return d["y"+year] + ") " + d.team;
+      });
+      svg.call(tip);
+        title.text(year);
+        svg.call(tip);
+        svg.selectAll("circle")
+        .transition()
+        .duration(1000)
+        .delay(100)
+        .attr("cy", function(d) {
+            if (d["y"+year] == 0 || d["y"+year] == "#N/A") {return -150}
+            else  {return y(parseInt(d["y"+year])); }
+        ;})
+      };
+    };
+
+    function plus_update() {
+      console.log(year);
+      if (year < 2015) {
+        year = year + 1;
+        tip.html(function(d) {
+      return d["y"+year] + ") " + d.team;
+      });
+      svg.call(tip);
+        title.text(year);
+        svg.selectAll("circle")
+        .transition()
+        .duration(1000)
+        .delay(100)
+        .attr("cy", function(d) {
+            if (d["y"+year] == 0 || d["y"+year] == "#N/A") {return -150}
+            else  {return y(parseInt(d["y"+year])); }
+        ;}) 
+      }
+      else {
+        year == 2015;
+        title.text(year);
+        tip.html(function(d) {
+      return d["y"+year] + ") " + d.team;
+      });
+      svg.call(tip);
+        svg.selectAll("circle")
+        .transition()
+        .duration(1000)
+        .delay(100)
+        .attr("cy", function(d) {
+            if (d["y"+year] == 0 || d["y"+year] == "#N/A") {return -150}
+            else  {return y(parseInt(d["y"+year])); }
+        ;})
+      };
+    };
+
+});
+
+function type(d) {
+  d.pts = +d.pts;
+  return d;
+}
+
+</script>
+<p><span style="font-family: tahoma, arial, helvetica, sans-serif;">&nbsp;</span></p>
+<address style="text-align: left;"><span style="font-size: xx-small; font-family: tahoma, arial, helvetica, sans-serif;">Copyright Massey-Peabody 2016. Monica Wojciechowski&nbsp;</span></address><address style="text-align: left;"><span style="font-size: xx-small; font-family: tahoma, arial, helvetica, sans-serif;">Visualization created using <a style="font-family: tahoma, arial, helvetica, sans-serif;" href="http://d3js.org">D3.js</a>, <a style="font-family: tahoma, arial, helvetica, sans-serif;" href="http://opensource.org/licenses/BSD-3-Clause">Terms of use</a>.</span></address>

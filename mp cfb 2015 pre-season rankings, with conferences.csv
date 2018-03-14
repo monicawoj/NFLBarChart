@@ -1,0 +1,129 @@
+Team,Conference,pts,Rank,Main,Region
+Oregon,Pac-12 North,14.5,19,Pac-12,North
+Stanford,Pac-12 North,14.4,20,Pac-12,North
+California,Pac-12 North,8.6,31,Pac-12,North
+Washington,Pac-12 North,3.7,48,Pac-12,North
+Washington State,Pac-12 North,-2,68,Pac-12,North
+Oregon State,Pac-12 North,-6.1,85,Pac-12,North
+UCLA,Pac-12 South,17.4,11,Pac-12,South
+USC,Pac-12 South,15.6,15,Pac-12,South
+Arizona State,Pac-12 South,10.5,22,Pac-12,South
+Utah,Pac-12 South,6.7,37,Pac-12,South
+Arizona,Pac-12 South,5.8,43,Pac-12,South
+Colorado,Pac-12 South,-1.1,63,Pac-12,South
+TCU,Big 12 ,20.1,5,Big 12 ,
+Oklahoma,Big 12 ,19.1,7,Big 12 ,
+Baylor,Big 12 ,16.6,13,Big 12 ,
+Texas,Big 12 ,10.4,23,Big 12 ,
+West Virginia,Big 12 ,9.2,28,Big 12 ,
+Oklahoma State,Big 12 ,8.5,32,Big 12 ,
+Kansas State,Big 12 ,7.8,33,Big 12 ,
+Texas Tech,Big 12 ,6.7,37,Big 12 ,
+Iowa State,Big 12 ,-2.2,72,Big 12 ,
+Kansas,Big 12 ,-9.3,98,Big 12 ,
+Wisconsin,Big Ten West,9.7,26,Big Ten,West
+Nebraska,Big Ten West,7.2,34,Big Ten,West
+Minnesota,Big Ten West,6.6,39,Big Ten,West
+Iowa,Big Ten West,3.2,51,Big Ten,West
+Illinois,Big Ten West,0.3,55,Big Ten,West
+Northwestern,Big Ten West,-0.7,61,Big Ten,West
+Purdue,Big Ten West,-1.9,67,Big Ten,West
+Ohio State,Big Ten East,26.5,2,Big Ten,East
+Michigan State,Big Ten East,17.7,10,Big Ten,East
+Penn State,Big Ten East,7.1,35,Big Ten,East
+Michigan,Big Ten East,6.6,39,Big Ten,East
+Indiana,Big Ten East,-0.1,59,Big Ten,East
+Maryland,Big Ten East,-2.3,73,Big Ten,East
+Rutgers,Big Ten East,-3.6,78,Big Ten,East
+Alabama,SEC West,29.2,1,SEC,West
+LSU,SEC West,22.3,3,SEC,West
+Auburn,SEC West,19.3,6,SEC,West
+Ole Miss,SEC West,16.7,12,SEC,West
+Arkansas,SEC West,16,14,SEC,West
+Texas A&M,SEC West,15,18,SEC,West
+Mississippi State,SEC West,13.5,21,SEC,West
+Georgia,SEC East,20.3,4,SEC,East
+Tennessee,SEC East,18.6,8,SEC,East
+Florida,SEC East,10,24,SEC,East
+Missouri,SEC East,9.4,27,SEC,East
+South Carolina,SEC East,5.6,44,SEC,East
+Kentucky,SEC East,5.1,46,SEC,East
+Vanderbilt,SEC East,0,57,SEC,East
+FSU,ACC Atlantic,15.1,17,ACC,Atlantic
+Clemson,ACC Atlantic,15.3,16,ACC,Atlantic
+Louisville,ACC Atlantic,7.1,35,ACC,Atlantic
+NC State,ACC Atlantic,6.4,41,ACC,Atlantic
+Boston College,ACC Atlantic,1.5,53,ACC,Atlantic
+Syracuse,ACC Atlantic,-2.9,75,ACC,Atlantic
+Wake Forest,ACC Atlantic,-4.9,81,ACC,Atlantic
+Georgia Tech,ACC Coastal,9.8,25,ACC,Coastal
+Miami (FL),ACC Coastal,9.2,28,ACC,Coastal
+Virginia Tech,ACC Coastal,8.7,30,ACC,Coastal
+UNC,ACC Coastal,5.3,45,ACC,Coastal
+Pittsburgh,ACC Coastal,4.6,47,ACC,Coastal
+Virginia,ACC Coastal,2.9,52,ACC,Coastal
+Duke,ACC Coastal,-1,62,ACC,Coastal
+Notre Dame,FBS Indep. ,18.3,9,FBS Indep. ,
+BYU,FBS Indep. ,3.3,50,FBS Indep. ,
+Army,FBS Indep. ,-17.1,120,FBS Indep. ,
+Memphis,American West,-2.1,70,American West,
+Navy,American West,-6.1,85,American West,
+Houston,American West,-7.4,89,American West,
+Tulane,American West,-9.2,97,American West,
+Tulsa,American West,-13.6,114,American West,
+SMU,American West,-20,128,American West,
+Temple,American East,0.3,55,American East,
+East Carolina,American East,-2.1,70,American East,
+Cincinnati,American East,-2.3,73,American East,
+UCF,American East,-4.7,80,American East,
+South Florida,American East,-9.7,101,American East,
+Connecticut,American East,-14.9,115,American East,
+Marshall,C-USA West,3.5,49,C-USA West,
+Louisiana Tech,C-USA West,0.6,54,C-USA West,
+Rice,C-USA West,-9.1,96,C-USA West,
+UTEP,C-USA West,-11.7,108,C-USA West,
+Southern Miss,C-USA West,-11.8,109,C-USA West,
+North Texas,C-USA West,-16.7,117,C-USA West,
+UTSA,C-USA West,-17.2,123,C-USA West,
+Western Kentucky,C-USA East,-2.9,75,C-USA East,
+Middle Tennessee,C-USA East,-5,82,C-USA East,
+FIU,C-USA East,-7.7,90,C-USA East,
+FAU,C-USA East,-9.4,99,C-USA East,
+Old Dominion,C-USA East,-13.2,112,C-USA East,
+Charlotte,C-USA East,0,57,C-USA East,
+Western Michigan,MAC West,-0.4,60,MAC West,
+Toledo,MAC West,-1.3,65,MAC West,
+Northern Illinois,MAC West,-3.7,79,MAC West,
+Central Michigan,MAC West,-8,92,MAC West,
+Ball State,MAC West,-8.2,93,MAC West,
+Eastern Michigan,MAC West,-19,126,MAC West,
+Ohio,MAC East,-7.1,88,MAC East,
+Massachussets,MAC East,-9.7,101,MAC East,
+Akron,MAC East,-10.3,104,MAC East,
+Bowling Green,MAC East,-10.8,105,MAC East,
+Kent State,MAC East,-11.9,110,MAC East,
+Miami (OH),MAC East,-15.9,116,MAC East,
+Buffalo,MAC East,-17.1,120,MAC East,
+San Diego State,MW West,-1.1,63,MW West,
+Nevada,MW West,-8.4,94,MW West,
+Fresno State,MW West,-8.9,95,MW West,
+San Jose State,MW West,-10.9,106,MW West,
+Hawaii,MW West,-12,111,MW West,
+UNLV,MW West,-18.5,124,MW West,
+Boise State,MW Mountain,6.2,42,MW Mountain,
+Utah State,MW Mountain,-1.5,66,MW Mountain,
+Air Force,MW Mountain,-5.9,84,MW Mountain,
+Colorado State,MW Mountain,-6.3,87,MW Mountain,
+New Mexico,MW Mountain,-9.4,99,MW Mountain,
+Wyoming,MW Mountain,-16.7,117,MW Mountain,
+Georgia Southern,Sun Belt ,-2,68,Sun Belt ,
+Appalachian State,Sun Belt ,-2.9,75,Sun Belt ,
+Arkansas State,Sun Belt ,-5.2,83,Sun Belt ,
+UL-Lafayette,Sun Belt ,-7.7,90,Sun Belt ,
+Texas State,Sun Belt ,-10,103,Sun Belt ,
+UL-Monroe,Sun Belt ,-11.6,107,Sun Belt ,
+Idaho,Sun Belt ,-13.5,113,Sun Belt ,
+South Alabama,Sun Belt ,-16.8,119,Sun Belt ,
+New Mexico State,Sun Belt ,-17.1,120,Sun Belt ,
+Georgia State,Sun Belt ,-18.5,124,Sun Belt ,
+Troy,Sun Belt ,-19.2,127,Sun Belt ,
